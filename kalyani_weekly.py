@@ -66,8 +66,8 @@ def identify_weekly_patterns(coin_analysis_list):
 def format_weekly_report(winners_analysis, losers_analysis, winners_data, losers_data, all_crypto):
     """Format weekly deep analysis report"""
     ist_tz = pytz.timezone('Asia/Kolkata')
-    timestamp = datetime.now(ist_tz).strftime("%Y-%m-%d")
-    week_start = (datetime.now(ist_tz) - timedelta(days=7)).strftime("%Y-%m-%d")
+    timestamp = datetime.now(ist_tz).strftime("%d-%b-%Y")
+    week_start = (datetime.now(ist_tz) - timedelta(days=7)).strftime("%d-%b-%Y")
     
     patterns = identify_weekly_patterns(all_crypto)
     
