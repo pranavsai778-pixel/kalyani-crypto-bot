@@ -45,21 +45,25 @@ def format_volume(volume):
         return f"${volume/1_000_000_000:.2f}B"
     elif volume >= 1_000_000:
         return f"${volume/1_000_000:.2f}M"
-    else:
+    elif volume >= 1_000:
         return f"${volume/1_000:.2f}K"
+    else:
+        return f"${volume:.2f}"
 
 def format_market_cap(market_cap):
     if market_cap is None or market_cap == 0:
         return "N/A"
     if market_cap >= 1_000_000_000:
         return f"${market_cap/1_000_000_000:.2f}B"
-    else:
+    elif market_cap >= 1_000_000:
         return f"${market_cap/1_000_000:.2f}M"
+    else:
+        return f"${market_cap:.2f}"
 
 def format_daily_report(winners_analysis, losers_analysis, winners_data, losers_data, all_crypto):
     """Format daily deep analysis report"""
     ist_tz = pytz.timezone('Asia/Kolkata')
-    timestamp = datetime.now(ist_tz).strftime("%Y-%m-%d %H:%M IST")
+    timestamp = datetime.now(ist_tz).strftime("%d-%b-%Y %H:%M IST")
     
     # Calculate daily stats (midnight to now)
     daily_change_24h = sum([c.get('price_change_percentage_24h', 0) or 0 for c in all_crypto[:10]]) / 10
