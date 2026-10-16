@@ -2,11 +2,16 @@ name: KALYANI Crypto Bot
 
 on:
   schedule:
+    # Hourly Report - Every hour
     - cron: '0 * * * *'
+    # Daily Report - Every day at 11:30 PM IST (6:00 PM UTC)
+    - cron: '0 18 * * *'
+    # Weekly Report - Every Monday at 11:30 PM IST
+    - cron: '0 18 * * 1'
   workflow_dispatch:
 
 jobs:
-  run_kalyani:
+  hourly_report:
     runs-on: ubuntu-latest
     
     steps:
@@ -21,8 +26,52 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
     
-    - name: Run KALYANI Bot
+    - name: Run KALYANI Hourly Bot
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       run: python kalyani.py
+
+  daily_report:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 18 * * *' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    
+    - name: Run KALYANI Daily Bot
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python kalyani_daily.py
+
+  weekly_report:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 18 * * 1' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    
+    - name: Run KALYANI Weekly Bot
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: python kalyani_weekly.py
