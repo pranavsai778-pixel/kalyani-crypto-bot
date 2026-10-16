@@ -202,8 +202,8 @@ def predict_next_month_trend(coin_data):
 def format_monthly_report(winners_analysis, losers_analysis, winners_data, losers_data, all_crypto):
     """Format comprehensive monthly report"""
     ist_tz = pytz.timezone('Asia/Kolkata')
-    timestamp = datetime.now(ist_tz).strftime("%Y-%m-%d")
-    month_start = (datetime.now(ist_tz) - timedelta(days=30)).strftime("%Y-%m-%d")
+    timestamp = datetime.now(ist_tz).strftime("%d-%b-%Y")
+    month_start = (datetime.now(ist_tz) - timedelta(days=30)).strftime("%d-%b-%Y")
     
     patterns = identify_monthly_patterns(all_crypto)
     market_momentum = calculate_market_momentum(all_crypto)
