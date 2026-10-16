@@ -1,6 +1,7 @@
 import torch
 from transformers import pipeline
 import pandas as pd
+import numpy as np
 
 # Model selection
 MODELS_SELECTION = {
@@ -50,7 +51,6 @@ def analyze_sentiment_quick(text, model):
         return {"label": "NEUTRAL", "score": 0.5}
     
     try:
-        # Limit text length for speed
         text = text[:512]
         result = model(text, truncation=True)[0]
         return {
@@ -100,7 +100,6 @@ def analyze_top_10_winners_quick(winners, model):
             change = coin.get('price_change_percentage_24h', 0)
             price = coin.get('current_price', 0)
             
-            # Analyze using model
             text = f"{name} price increased by {change}% in 24 hours"
             sentiment = analyze_sentiment_quick(text, model)
             
@@ -134,7 +133,6 @@ def analyze_top_10_winners_deep(winners, model):
             market_cap = coin.get('market_cap', 0)
             volume = coin.get('total_volume', 0)
             
-            # Deep sentiment analysis
             text = f"{name} cryptocurrency surge with {change}% gain, market cap {market_cap}"
             sentiment = analyze_sentiment_deep(text, model)
             
@@ -168,7 +166,6 @@ def analyze_top_10_losers_quick(losers, model):
             change = coin.get('price_change_percentage_24h', 0)
             price = coin.get('current_price', 0)
             
-            # Analyze using model
             text = f"{name} price decreased by {abs(change)}% in 24 hours"
             sentiment = analyze_sentiment_quick(text, model)
             
@@ -202,7 +199,6 @@ def analyze_top_10_losers_deep(losers, model):
             market_cap = coin.get('market_cap', 0)
             volume = coin.get('total_volume', 0)
             
-            # Deep sentiment analysis
             text = f"{name} cryptocurrency decline with {abs(change)}% loss, market cap {market_cap}"
             sentiment = analyze_sentiment_deep(text, model)
             
