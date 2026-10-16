@@ -6,7 +6,6 @@ textblob==0.17.1
 transformers==4.35.0
 torch==2.1.0
 pandas==2.1.1
-pandas-ta==0.3.14b0
 pytz==2023.3
 python-dotenv==1.0.0
 numpy==1.24.3
