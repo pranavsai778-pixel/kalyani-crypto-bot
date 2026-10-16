@@ -109,7 +109,7 @@ def calculate_market_health(coin):
 def format_hourly_report(winners_analysis, losers_analysis, winners_data, losers_data, all_crypto):
     """Format the hourly report for Discord"""
     ist_tz = pytz.timezone('Asia/Kolkata')
-    timestamp = datetime.now(ist_tz).strftime("%Y-%m-%d %H:%M IST")
+    timestamp = datetime.now(ist_tz).strftime("%d-%b-%Y %H:%M IST")
     
     # Build winners section
     winners_text = "🏆 **TOP 10 WINNERS (24h)**\n"
