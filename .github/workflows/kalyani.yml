@@ -36,7 +36,6 @@ jobs:
 
   daily_report:
     runs-on: ubuntu-latest
-    if: github.event.schedule == '0 18 * * *' || github.event_name == 'workflow_dispatch'
     
     steps:
     - name: Checkout code
@@ -50,7 +49,18 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
     
+    - name: Check if Daily Report Should Run
+      id: check_daily
+      run: |
+        HOUR=$(date -u +%H)
+        if [ "$HOUR" = "18" ]; then
+          echo "should_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "should_run=false" >> $GITHUB_OUTPUT
+        fi
+    
     - name: Run KALYANI Daily Bot
+      if: steps.check_daily.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -58,7 +68,6 @@ jobs:
 
   weekly_report:
     runs-on: ubuntu-latest
-    if: github.event.schedule == '0 18 * * 1' || github.event_name == 'workflow_dispatch'
     
     steps:
     - name: Checkout code
@@ -72,7 +81,19 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
     
+    - name: Check if Weekly Report Should Run
+      id: check_weekly
+      run: |
+        DAY=$(date -u +%u)
+        HOUR=$(date -u +%H)
+        if [ "$DAY" = "1" ] && [ "$HOUR" = "18" ]; then
+          echo "should_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "should_run=false" >> $GITHUB_OUTPUT
+        fi
+    
     - name: Run KALYANI Weekly Bot
+      if: steps.check_weekly.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -80,7 +101,6 @@ jobs:
 
   monthly_report:
     runs-on: ubuntu-latest
-    if: github.event.schedule == '0 18 1 * *' || github.event_name == 'workflow_dispatch'
     
     steps:
     - name: Checkout code
@@ -94,7 +114,19 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
     
+    - name: Check if Monthly Report Should Run
+      id: check_monthly
+      run: |
+        DATE=$(date -u +%d)
+        HOUR=$(date -u +%H)
+        if [ "$DATE" = "01" ] && [ "$HOUR" = "18" ]; then
+          echo "should_run=true" >> $GITHUB_OUTPUT
+        else
+          echo "should_run=false" >> $GITHUB_OUTPUT
+        fi
+    
     - name: Run KALYANI Monthly Bot
+      if: steps.check_monthly.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
       env:
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
